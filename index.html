@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Rob Cases</title>
+<style>
+:root{color-scheme:light;--page:#f7f7f5;--surface:#fff;--ink:#141414;--ink2:#55534f;--muted:#8a8882;--line:#e4e3dd;
+--accent:#2a6fd6;--pend:#e07a2e;--res:#1f9d6a;--skip:#9a988f;--bad:#cf3b3b;--warn:#d9a21b}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--page:#0f0f0f;--surface:#1b1b1a;--ink:#f0efec;
+--ink2:#c4c2ba;--muted:#8d8b84;--line:#2e2e2c;--accent:#4b8fe8;--pend:#e88a45;--res:#2fb37f;--skip:#77756e}}
+:root[data-theme="dark"]{color-scheme:dark;--page:#0f0f0f;--surface:#1b1b1a;--ink:#f0efec;--ink2:#c4c2ba;--muted:#8d8b84;--line:#2e2e2c;
+--accent:#4b8fe8;--pend:#e88a45;--res:#2fb37f;--skip:#77756e}
+*{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--ink);font:14px/1.45 system-ui,-apple-system,"Segoe UI",sans-serif;padding:20px 16px 48px}
+.wrap{max-width:1080px;margin:0 auto}
+h1{font-size:20px;margin:0;letter-spacing:-.01em}
+h2{font-size:12.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink2);margin:0 0 10px;font-weight:600}
+.sub{color:var(--muted);font-size:13px}
+header{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:baseline;gap:8px 16px;margin-bottom:16px}
+button{font:inherit;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:6px 12px;cursor:pointer}
+button:hover{border-color:var(--ink2)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:16px;min-width:0}
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.tile .l{color:var(--ink2);font-size:12.5px}.tile .v{font-size:32px;font-weight:600;line-height:1.1;margin-top:4px;font-variant-numeric:tabular-nums}
+.tile .d{color:var(--muted);font-size:12px;margin-top:4px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}.grid2 .card{margin:0}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;color:var(--muted);font-weight:500;font-size:12px;padding:4px 8px 6px;border-bottom:1px solid var(--line)}
+td{padding:6px 8px;border-bottom:1px solid var(--line)}tr:last-child td{border-bottom:0}
+.num{text-align:right;font-variant-numeric:tabular-nums}.mono{font-variant-numeric:tabular-nums;white-space:nowrap}
+.scroll{overflow-x:auto}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;vertical-align:middle}
+.g-Pending{background:var(--pend)}.g-Resolved{background:var(--res)}.g-Skipped,.g-Other{background:var(--skip)}
+.tag{display:inline-block;font-size:11px;padding:1px 7px;border-radius:6px;border:1px solid var(--line);color:var(--ink2)}
+.t1{border-color:var(--bad);color:var(--bad)}.t2{border-color:var(--pend);color:var(--pend)}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;align-items:center}
+.tabs button[aria-pressed="true"]{background:var(--ink);color:var(--page);border-color:var(--ink)}
+.tabs input{font:inherit;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:6px 10px;margin-left:auto;width:140px}
+.legend{display:flex;gap:16px;font-size:12px;color:var(--ink2);margin-bottom:6px}.legend i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+svg{display:block;width:100%;height:auto}.tick{fill:var(--muted);font-size:11px}.gridl{stroke:var(--line)}
+.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:12.5px;font-weight:600;background:var(--surface)}
+.pill .dot{margin:0}.ok{background:var(--res)}.warn{background:var(--warn)}.crit{background:var(--bad)}.neu{background:var(--skip)}
+#lock{max-width:360px;margin:12vh auto 0}#lock form{display:flex;gap:8px;margin-top:12px}
+#lock input{flex:1;font:inherit;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:8px 10px;min-width:0}
+.err{color:var(--bad);font-size:13px;margin-top:8px;min-height:1.4em}
+.muted{color:var(--muted)}
+@media (max-width:760px){.tiles{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}.tabs input{margin-left:0;width:100%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div id="lock" class="card">
+    <h1>Rob Cases</h1>
+    <div class="sub">Enter the dashboard password.</div>
+    <form id="pwform"><input id="pw" type="password" autocomplete="current-password" aria-label="Password" autofocus><button type="submit">Open</button></form>
+    <div class="err" id="pwerr" role="alert"></div>
+  </div>
+  <div id="app" hidden>
+    <header>
+      <div><h1>Rob Cases</h1><div class="sub" id="updated"></div></div>
+      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><span id="robpill"></span><button id="lockbtn" type="button">Lock</button></div>
+    </header>
+    <div class="tiles" id="tiles"></div>
+    <div class="grid2">
+      <div class="card"><h2>By recipient</h2><div class="scroll"><table id="byto"></table></div></div>
+      <div class="card"><h2>Last 14 days</h2>
+        <div class="legend"><span><i style="background:var(--pend)"></i>Queued</span><span><i style="background:var(--res)"></i>Resolved</span></div>
+        <div id="trend"></div></div>
+    </div>
+    <div class="card"><h2>Cases</h2>
+      <div class="tabs" id="tabs"></div>
+      <div class="scroll"><table id="cases"></table></div>
+      <div class="sub" id="shown" style="margin-top:8px"></div>
+    </div>
+    <div class="sub">Shows Rob Log reference codes and counts only. Look up a case's details in the Rob Log.</div>
+  </div>
+</div>
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const b64 = s => Uint8Array.from(atob(s), c => c.charCodeAt(0));
+  let password = null, data = null, filter = "Pending", query = "";
+
+  async function load(pw) {
+    const r = await fetch("data.json?t=" + Date.now(), {cache: "no-store"});
+    if (!r.ok) throw new Error("Couldn't load the data (" + r.status + ").");
+    const blob = await r.json();
+    const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(pw), "PBKDF2", false, ["deriveKey"]);
+    const key = await crypto.subtle.deriveKey({name: "PBKDF2", salt: b64(blob.salt), iterations: blob.iter, hash: "SHA-256"},
+      base, {name: "AES-GCM", length: 256}, false, ["decrypt"]);
+    let plain;
+    try { plain = await crypto.subtle.decrypt({name: "AES-GCM", iv: b64(blob.iv)}, key, b64(blob.ct)); }
+    catch (e) { throw new Error("Wrong password."); }
+    return JSON.parse(new TextDecoder().decode(plain));
+  }
+
+  function el(tag, attrs, ...kids) {
+    const n = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs || {})) {
+      if (k === "class") n.className = v; else if (k === "text") n.textContent = v; else n.setAttribute(k, v);
+    }
+    for (const k of kids) if (k != null) n.append(k);
+    return n;
+  }
+  const fmtDate = iso => { if (!iso) return "–"; const [y, m, d] = iso.split("-"); return +m + "/" + +d; };
+  const fmtStamp = s => { if (!s) return "?"; const d = new Date(s); return d.toLocaleString([], {month: "short", day: "numeric", hour: "numeric", minute: "2-digit"}); };
+  const days = n => n == null ? "–" : n + (n === 1 ? " day" : " days");
+
+  function tile(label, value, detail) {
+    return el("div", {class: "tile"}, el("div", {class: "l", text: label}), el("div", {class: "v", text: String(value)}), el("div", {class: "d", text: detail}));
+  }
+
+  function robPill(rob) {
+    let cls = "neu", label = "Rob: " + (rob.state || "?");
+    const mins = rob.last_run ? Math.round((Date.now() - new Date(rob.last_run)) / 60000) : null;
+    if (rob.paused === "YES") { cls = "warn"; label = "Rob: Paused"; }
+    else if (rob.state === "ERROR") cls = "crit";
+    else if (rob.state === "OK") cls = "ok";
+    else if (rob.state === "DRY-RUN" || rob.state === "TEST") cls = "warn";
+    const p = el("span", {class: "pill"}, el("span", {class: "dot " + cls}), label);
+    const s = el("span", {class: "sub", text: "Last run " + (rob.last_run ? fmtStamp(rob.last_run) + (mins != null ? " (" + mins + " min before this update)" : "") : "?") + " · Mode " + rob.mode});
+    const wrap = el("span", {style: "display:inline-flex;gap:8px;align-items:center;flex-wrap:wrap"}, p, s);
+    return wrap;
+  }
+
+  function trendSvg(trend) {
+    const W = 520, H = 190, L = 28, R = 8, T = 10, B = 26, n = trend.length;
+    const top = Math.max(1, ...trend.map(t => Math.max(t.queued, t.closed)));
+    const step = (W - L - R) / n, bw = Math.min(10, step * 0.32), ph = H - T - B;
+    let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Cases queued and resolved per day for the last ${n} days">`;
+    for (const tv of (top >= 2 ? [0, Math.round(top / 2), top] : [0, 1])) {
+      const y = T + ph * (1 - tv / top);
+      s += `<line x1="${L}" x2="${W - R}" y1="${y}" y2="${y}" class="gridl"/><text x="${L - 6}" y="${y + 4}" class="tick" text-anchor="end">${tv}</text>`;
+    }
+    trend.forEach((t, i) => {
+      const x = L + i * step + step / 2;
+      const hq = ph * t.queued / top, hc = ph * t.closed / top;
+      s += `<g><title>${fmtDate(t.date)}: ${t.queued} queued, ${t.closed} resolved</title>`;
+      if (hq) s += `<rect x="${x - bw - 1}" y="${T + ph - hq}" width="${bw}" height="${hq}" rx="2" fill="var(--pend)"/>`;
+      if (hc) s += `<rect x="${x + 1}" y="${T + ph - hc}" width="${bw}" height="${hc}" rx="2" fill="var(--res)"/>`;
+      s += `</g>`;
+      if (i % 2 === (n - 1) % 2) s += `<text x="${x}" y="${H - 8}" class="tick" text-anchor="middle">${fmtDate(t.date)}</text>`;
+    });
+    return s + "</svg>";
+  }
+
+  function renderCases() {
+    const tabs = $("tabs"); tabs.replaceChildren();
+    const g = data.counts.groups;
+    for (const [name, n] of [["Pending", g.Pending], ["Resolved", g.Resolved], ["Skipped", g.Skipped], ["All", data.cases.length]]) {
+      const b = el("button", {type: "button", "aria-pressed": String(filter === name)}, name + " " + n);
+      b.onclick = () => { filter = name; renderCases(); };
+      tabs.append(b);
+    }
+    const q = el("input", {type: "search", placeholder: "Find Ref (R0012)", "aria-label": "Find a Ref"});
+    q.value = query;
+    q.oninput = () => { query = q.value.trim().toUpperCase(); renderCases(); $("tabs").querySelector("input").focus(); };
+    tabs.append(q);
+
+    // A Ref search looks across every case, whichever tab is selected.
+    const inTab = c => filter === "All" || c.group === filter || (filter === "Pending" && c.group === "Other");
+    const rows = data.cases.filter(c => query ? c.ref.includes(query) : inTab(c));
+    const t = $("cases"); t.replaceChildren();
+    t.append(el("tr", {}, el("th", {text: "Ref"}), el("th", {text: "Status"}), el("th", {text: "To"}), el("th", {text: "Tier"}),
+      el("th", {text: "Queued"}), el("th", {text: "Closed"}), el("th", {class: "num", text: "Open for"}), el("th", {class: "num", text: "Took"}), el("th", {class: "num", text: "Reminders"})));
+    for (const c of rows) {
+      const tier = c.tier ? el("span", {class: "tag t" + c.tier, text: "T" + c.tier}) : "–";
+      t.append(el("tr", {},
+        el("td", {class: "mono", text: c.ref}),
+        el("td", {}, el("span", {class: "dot g-" + c.group}), c.status),
+        el("td", {text: c.to}), el("td", {}, tier),
+        el("td", {class: "mono", text: fmtDate(c.queued)}), el("td", {class: "mono", text: fmtDate(c.closed)}),
+        el("td", {class: "num", text: days(c.age)}), el("td", {class: "num", text: days(c.took)}), el("td", {class: "num", text: String(c.rem)})));
+    }
+    if (!rows.length) t.append(el("tr", {}, el("td", {colspan: "9", class: "muted", text: query ? "No case matches that Ref." : "Nothing here."})));
+    $("shown").textContent = rows.length + " of " + data.cases.length + " cases shown";
+  }
+
+  function render() {
+    const c = data.counts, g = c.groups;
+    $("updated").textContent = "Updated " + fmtStamp(data.generated) + " · checks for new data every 5 min";
+    $("robpill").replaceChildren(robPill(data.rob));
+    const tp = c.tier_pending;
+    $("tiles").replaceChildren(
+      tile("Pending", g.Pending, `T1 ${tp["1"]} · T2 ${tp["2"]} · T3 ${tp["3"]} · T4 ${tp["4"]}`),
+      tile("Resolved", g.Resolved, `${c.closed_today} closed today`),
+      tile("Oldest pending", c.oldest_pending_days == null ? "–" : c.oldest_pending_days + "d", "business days since the call"),
+      tile("Typical time to close", c.median_days_to_close == null ? "–" : c.median_days_to_close + "d", "median, business days"));
+    const bt = $("byto"); bt.replaceChildren(el("tr", {}, el("th", {text: "Recipient"}), el("th", {class: "num", text: "Pending"}), el("th", {class: "num", text: "Resolved"}), el("th", {class: "num", text: "Skipped"})));
+    const entries = Object.entries(c.by_recipient);
+    for (const [who, p] of entries) bt.append(el("tr", {}, el("td", {text: who}), el("td", {class: "num", text: String(p.Pending + p.Other)}), el("td", {class: "num", text: String(p.Resolved)}), el("td", {class: "num", text: String(p.Skipped)})));
+    if (!entries.length) bt.append(el("tr", {}, el("td", {colspan: "4", class: "muted", text: "No cases yet."})));
+    $("trend").innerHTML = trendSvg(data.trend);
+    renderCases();
+  }
+
+  $("pwform").onsubmit = async ev => {
+    ev.preventDefault();
+    const pw = $("pw").value; $("pwerr").textContent = "Opening…";
+    try { data = await load(pw); password = pw; $("pw").value = ""; $("pwerr").textContent = "";
+      $("lock").hidden = true; $("app").hidden = false; render(); }
+    catch (e) { $("pwerr").textContent = e.message; }
+  };
+  $("lockbtn").onclick = () => { password = null; data = null; $("app").hidden = true; $("lock").hidden = false; $("pw").focus(); };
+  setInterval(async () => {
+    if (!password || document.hidden) return;
+    try { data = await load(password); render(); } catch (e) { /* keep showing the last good data */ }
+  }, 5 * 60 * 1000);
+})();
+</script>
+</body>
+</html>
